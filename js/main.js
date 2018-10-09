@@ -98,9 +98,22 @@ user.setBubblez = function(bubble_status) {
 };
 
 user.getTime = function() {
+    // Use the time from preferences
     var time = preferences.get('time');
+    if (time !== undefined) {
+        return time
+    }
 
-    return time !== undefined ? time : user.setTime(17); // Default to 5pm
+    // Or try getting it from the URL anchor
+    var urlTime = window.location.hash.substr(1);
+    time = parseInt(urlTime, 10)
+
+    // Or default to 5pm
+    if (isNaN(time)) {
+        time = 17
+    }
+
+    return user.setTime(time)
 };
 
 user.setTime = function(time) {
